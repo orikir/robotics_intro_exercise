@@ -3,6 +3,7 @@ Small script using dronekit
 """
 from ardocopter import *
 
+ADRESS = 'udpin:0.0.0.0:14550'
 
 def main():
     copter = Copter(ADRESS)
