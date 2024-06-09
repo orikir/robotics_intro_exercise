@@ -1,8 +1,6 @@
 import time
 from dronekit import connect, VehicleMode, LocationGlobalRelative
 
-ADRESS = 'udpin:0.0.0.0:14550'
-
 
 class Copter:
     def _connect(self, address):
