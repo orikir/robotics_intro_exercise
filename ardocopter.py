@@ -4,7 +4,9 @@ from dronekit import connect, VehicleMode, LocationGlobalRelative
 
 class Copter:
     def _connect(self, address):
-        # Connect to the Vehicle.
+        """
+        Connect to the Vehicle.
+        """
         print("Connecting to vehicle on: %s" % (address,))
         self.vehicle = connect(address, wait_ready=True)
 
@@ -12,7 +14,9 @@ class Copter:
         self._connect(address)
 
     def print_info(self):
-        # Get some vehicle attributes (state)
+        """
+        Get some vehicle attributes (state)
+        """
         print("Get some vehicle attribute values:")
         print(" GPS: ", self.vehicle.gps_0)
         print(" Battery: ", self.vehicle.battery)
@@ -22,14 +26,15 @@ class Copter:
         print(" Mode: ", self.vehicle.mode.name)
 
     def disconnect(self):
-        # Close vehicle object before exiting script
+        """
+        Close vehicle object
+        """
         self.vehicle.close()
 
     def arm(self):
         """
         Arms vehicle.
         """
-
         print("Basic pre-arm checks")
         # Don't try to arm until autopilot is ready
         while not self.vehicle.is_armable:
@@ -48,14 +53,12 @@ class Copter:
 
     def takeoff(self, target_altitude):
         """
-        Fly to target altitude.
+        Take ff - fly to target altitude.
         """
         print("Taking off!")
         self.vehicle.simple_takeoff(target_altitude)  # Take off to target altitude
 
         # Wait until the vehicle reaches a safe height before processing the goto
-        #  (otherwise the command after Vehicle.simple_takeoff will execute
-        #   immediately).
         while True:
             print(" Altitude: ", self.vehicle.location.global_relative_frame.alt)
             # Break and return from function just below target altitude.
@@ -65,6 +68,9 @@ class Copter:
             time.sleep(1)
 
     def fly_to_location(self, latitude, longitude, altitude):
+        """
+        Fly to the given location.
+        """
         print("Going towardspoint for 30 seconds ...")
         point1 = LocationGlobalRelative(latitude, longitude, altitude)
         self.vehicle.simple_goto(point1)
@@ -73,5 +79,8 @@ class Copter:
         time.sleep(30)
 
     def return_home(self):
+        """
+        Return to start point
+        """
         print("Returning to Launch")
         self.vehicle.mode = VehicleMode("RTL")
