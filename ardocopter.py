@@ -53,7 +53,7 @@ class Copter:
 
     def takeoff(self, target_altitude):
         """
-        Take ff - fly to target altitude.
+        Take off - fly to target altitude.
         """
         print("Taking off!")
         self.vehicle.simple_takeoff(target_altitude)  # Take off to target altitude
