@@ -3,15 +3,17 @@ from dronekit import connect, VehicleMode, LocationGlobalRelative
 
 
 class Copter:
-    def _connect(self, address):
+    def _connect(self, address, system_id):
         """
         Connect to the Vehicle.
         """
-        print("Connecting to vehicle on: %s" % (address,))
+        print("Connecting to vehicle on: ", address, system_id)
         self.vehicle = connect(address, wait_ready=True)
 
-    def __init__(self, address):
-        self._connect(address)
+    def __init__(self, address, system_id, is_leader=True):
+        self._connect(address, system_id)
+        self.system_id = system_id
+        self.is_leader = is_leader
 
     def print_info(self):
         """
@@ -72,11 +74,15 @@ class Copter:
         Fly to the given location.
         """
         print("Going towardspoint for 30 seconds ...")
-        point1 = LocationGlobalRelative(latitude, longitude, altitude)
-        self.vehicle.simple_goto(point1)
+        point = LocationGlobalRelative(latitude, longitude, altitude)
+        self.vehicle.simple_goto(point)
 
         # sleep so we can see the change in map
         time.sleep(30)
+
+    def get_location(self):
+        global_frame = self.vehicle.location.global_relative_frame
+        return global_frame.lat, global_frame.lon, global_frame.alt
 
     def return_home(self):
         """
